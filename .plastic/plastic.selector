@@ -1,0 +1,4 @@
+repository "2D/GGame@14568621279220@cloud"
+  path "/"
+    br "/main"
+    co "/main"
