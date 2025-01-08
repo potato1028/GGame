@@ -8,7 +8,7 @@ public class SkillSpace : MonoBehaviour {
     public Transform targetObject;
 
     [Header("Component")]
-    public static SpriteRenderer skillSP;
+    private static SpriteRenderer skillSP;
 
     [Header("Condition")]
     public float maxDistance = 5f;

@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 
 public class PlayerControl : MonoBehaviour {
     public PlayerStateData playerState;
@@ -17,14 +16,6 @@ public class PlayerControl : MonoBehaviour {
 
     void Start() {
         playerState.moveSpeed = 5f;
-        playerState.jumpForce = 10f;
-
-        playerState.jumpLock = false;
-        playerState.moveLock = false;
-        playerState.blinkLock = false;
-
-        playerState.jumpBufferTime = 0.05f;
-        playerState.coyoteTime = 0.1f;
     }
 
     void Update() {
@@ -37,26 +28,15 @@ public class PlayerControl : MonoBehaviour {
     }
 
     void playerMove() {
-        if(!playerState.moveLock) {
+        if (!playerState.moveLock) {
             float horizontalInput = Input.GetAxis("Horizontal");
 
-            if(!isAttachedLeftWall && horizontalInput < 0) {
-                playerRb.linearVelocity = new Vector2(horizontalInput * playerState.moveSpeed, playerRb.linearVelocity.y);
-            }
-     
-            if(!isAttachedRightWall && horizontalInput > 0) {
+            if (!isAttachedLeftWall && horizontalInput < 0) {
                 playerRb.linearVelocity = new Vector2(horizontalInput * playerState.moveSpeed, playerRb.linearVelocity.y);
             }
 
-            if(Input.GetKeyDown(KeyCode.Space) && !playerState.jumpLock) {
-                if(playerState.isGround && !playerState.jumpLock) {
-                    playerRb.linearVelocity = new Vector2(playerRb.linearVelocity.x, playerState.jumpForce);
-                    StartCoroutine(jumpDelay());
-                }
-
-                else if(!playerState.isGround) {
-                    Invoke("jumpBuffer", playerState.jumpBufferTime);
-                }
+            if (!isAttachedRightWall && horizontalInput > 0) {
+                playerRb.linearVelocity = new Vector2(horizontalInput * playerState.moveSpeed, playerRb.linearVelocity.y);
             }
         }
     }
@@ -67,7 +47,7 @@ public class PlayerControl : MonoBehaviour {
 
         Vector2 wallRayVec = new Vector2(transform.position.x, transform.position.y + 0.9f);
 
-        for(int i = 0; i < 5; i++) {
+        for (int i = 0; i < 5; i++) {
             isLeftWalls[i] = Physics2D.Raycast(wallRayVec, Vector2.left, 0.51f, Layer.groundLayer);
             isRightWalls[i] = Physics2D.Raycast(wallRayVec, Vector2.right, 0.51f, Layer.groundLayer);
 
@@ -79,7 +59,7 @@ public class PlayerControl : MonoBehaviour {
             isAttachedLeftWall = isLeftWalls[i];
             isAttachedRightWall = isRightWalls[i];
 
-            if(isAttachedLeftWall || isAttachedRightWall) {
+            if (isAttachedLeftWall || isAttachedRightWall) {
                 break;
             }
 
@@ -92,14 +72,14 @@ public class PlayerControl : MonoBehaviour {
 
         Vector2 groundRayVec = new Vector2(transform.position.x - 0.4f, transform.position.y);
 
-        for(int i = 0; i < 9; i++) {
+        for (int i = 0; i < 9; i++) {
             isDownGround[i] = Physics2D.Raycast(groundRayVec, Vector2.down, 1.1f, Layer.groundLayer);
 
             #if UNITY_EDITOR
             Debug.DrawRay(groundRayVec, Vector2.down * 1.1f, Color.green);
             #endif
-            
-            if(isDownGround[i]) {
+
+            if (isDownGround[i]) {
                 CancelInvoke("endCoyote");
                 playerState.isGround = true;
                 break;
@@ -113,19 +93,5 @@ public class PlayerControl : MonoBehaviour {
 
     void endCoyote() {
         playerState.isGround = false;
-    }
-
-    void jumpBuffer() {
-        if(playerState.isGround) {
-            playerRb.linearVelocity = new Vector2(playerRb.linearVelocity.x, playerState.jumpForce);
-        }
-    }
-
-    IEnumerator jumpDelay() {
-        playerState.jumpLock = true;
-
-        yield return new WaitForSeconds(0.25f);
-
-        playerState.jumpLock = false;
     }
 }
