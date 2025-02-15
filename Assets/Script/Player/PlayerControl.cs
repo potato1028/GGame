@@ -11,6 +11,8 @@ public class PlayerControl : MonoBehaviour {
     public bool isAttachedRightWall;
 
     void Awake() {
+        if(playerState == null) playerState = Resources.Load<PlayerStateData>("State");
+
         playerRb = this.gameObject.GetComponent<Rigidbody2D>();
     }
 

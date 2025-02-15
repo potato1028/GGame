@@ -1,14 +1,16 @@
 using UnityEngine;
 using System.Collections;
 
-public class BlinkSkill : MonoBehaviour, ISkill {
+public class BlinkSkill : MonoBehaviour, PlayerSkill_Interface {
     public PlayerStateData playerState;
     public GameObject skillSpaceCircle;
 
-    private Rigidbody2D playerRb; //참조 방식
+    private Rigidbody2D playerRb;
     private bool isRightMousePressed;
 
     void Start() {
+        if(playerState == null) playerState = Resources.Load<PlayerStateData>("State");
+        
         playerRb = PlayerControl.playerRb;
     }
 

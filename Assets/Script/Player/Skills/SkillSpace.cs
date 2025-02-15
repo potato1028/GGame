@@ -15,6 +15,8 @@ public class SkillSpace : MonoBehaviour {
     public Vector3 worldPosition;
 
     void Start() {
+        if(playerState == null) playerState = Resources.Load<PlayerStateData>("State");
+        
         targetObject = this.transform.parent;
         skillSP = GetComponent<SpriteRenderer>();
 

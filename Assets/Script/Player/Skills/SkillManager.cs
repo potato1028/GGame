@@ -2,13 +2,13 @@ using UnityEngine;
 using System.Collections;
 
 public class SkillManager : MonoBehaviour {
-    private ISkill[] skills;
+    private PlayerSkill_Interface[] skills;
 
     void Start() {
-        skills = GetComponents<ISkill>();
+        skills = GetComponents<PlayerSkill_Interface>();
     }
 
-    public void ActivateSkill(string skillName) {
+    public void ActivateSkill(string skillName) { //특정 스킬 즉시 사용을 위해 다른 곳에서 언제나 호출 가능하게 만듦
         foreach(var skill in skills) {
             if(skill.GetName() == skillName) {
                 skill.UseSkill();

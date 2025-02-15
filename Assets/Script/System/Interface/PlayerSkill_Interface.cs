@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public interface ISkill {
+public interface PlayerSkill_Interface {
     string GetName();
     void UseSkill();
     void OnUpdate();

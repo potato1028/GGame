@@ -1,13 +1,15 @@
 using UnityEngine;
 using System.Collections;
 
-public class JumpSkill : MonoBehaviour, ISkill {
+public class JumpSkill : MonoBehaviour, PlayerSkill_Interface{
     public PlayerStateData playerState;
 
     private Rigidbody2D playerRb;
     private bool jumpBufferActive;
 
     void Start() {
+        if(playerState == null) playerState = Resources.Load<PlayerStateData>("State");
+        
         playerRb = PlayerControl.playerRb;
     }
 

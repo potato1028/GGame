@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: State
   m_EditorClassIdentifier: 
   playerName: 
-  moveSpeed: 1
+  moveSpeed: 5
   jumpForce: 10
-  isAttachedLeftWall: 0
-  isAttachedRightWall: 0
+  isGround: 1
+  jumpLock: 0
+  moveLock: 0
+  blinkLock: 0
   jumpBufferTime: 0.05
-  coyoteTime: 0.1
+  coyoteTime: 0.25
