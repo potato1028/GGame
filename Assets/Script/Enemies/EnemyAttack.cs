@@ -3,18 +3,19 @@ using System.Collections;
 
 public class EnemyAttack : MonoBehaviour, EnemySkill_Interface {
     [Header("Enemy State")]
-    public float attackRange;
     public float attackReadyTime;
     public float attackCoolTime;
     
     public bool isCanAttack;
 
-    //[Header("Component")]
+    [Header("Component")]
+    private EnemyState enemyState;
 
     void Start() {
-        attackRange = 2f;
-        attackReadyTime = 0.5f;
-        attackCoolTime = 1.0f;
+        enemyState = this.GetComponent<EnemyState>();
+        
+        attackReadyTime = enemyState.attackReadyTime;
+        attackCoolTime = enemyState.attackCoolTime;
 
         isCanAttack = true;
     }
@@ -23,10 +24,8 @@ public class EnemyAttack : MonoBehaviour, EnemySkill_Interface {
         return "EnemyAttack";
     }
 
-    public void UseSkill(Vector2 directionToPlayer, float distanceToPlayer, Vector2[] detectionPoints) {
-        if(attackRange > distanceToPlayer) {
-            StartCoroutine(Attack());
-        }
+    public void UseSkill() {
+        StartCoroutine(Attack());
     }
 
     IEnumerator Attack() {

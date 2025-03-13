@@ -20,4 +20,4 @@ MonoBehaviour:
   moveLock: 0
   blinkLock: 0
   jumpBufferTime: 0.05
-  coyoteTime: 0.25
+  coyoteTime: 0.1

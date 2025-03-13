@@ -15,4 +15,7 @@ public enum LayerNum {
 public static class Layer {
     public static LayerMask groundLayer = 1 << (int)LayerNum.Ground;
     public static LayerMask wallLayer = 1 << (int)LayerNum.Wall;
+    public static LayerMask playerLayer = 1 << (int)LayerNum.Player;
+
+    public static LayerMask terrainLayer =  (1 << (int)LayerNum.Wall) | (1 << (int)LayerNum.Ground);
 }

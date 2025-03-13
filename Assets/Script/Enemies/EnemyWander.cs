@@ -3,41 +3,49 @@ using System.Collections;
 
 public class EnemyWander : MonoBehaviour, EnemySkill_Interface {
     [Header("Enemy State")]
-    public int[] direction;
+    public int[] directToPlayer;
     public int selectDirection;
+    public int stareDirection;
+
     public float wanderSpeed;
     public float randTime;
 
     public bool isCanWander;
-    public RaycastHit2D hit;
+    public RaycastHit2D obstacleHit;
 
     [Header("Component")]
     public Rigidbody2D rb2D;
-
-    void Awake() {
-        rb2D = this.GetComponent<Rigidbody2D>();
-    }
+    private EnemyDetect enemyDetect;
+    private EnemyState enemyState;
 
     void Start() {
-        direction = new int[] {-1, 0, 1};
-        selectDirection = direction[Random.Range(0, direction.Length)];
-        wanderSpeed = 1f;
+        rb2D = this.GetComponent<Rigidbody2D>();
+
+        enemyDetect = this.GetComponent<EnemyDetect>();
+        enemyState = this.GetComponent<EnemyState>();
+
+        directToPlayer = new int[] {-1, 0, 1};
+        selectDirection = directToPlayer[Random.Range(0, directToPlayer.Length)];
+        stareDirection = 1;
+
+        wanderSpeed = enemyState.wanderSpeed;
 
         isCanWander = true;
 
         StartCoroutine(changeDirection());
     }
 
-    void Update() {
-        detectWall();
-    }
-
     public string GetName() {
         return "EnemyWander";
     }
 
-    public void UseSkill(Vector2 directionToPlayer, float distanceToPlayer, Vector2[] detectionPoints) {
+    public void UseSkill() {
+        detectWall();
         rb2D.linearVelocity = new Vector2(wanderSpeed * selectDirection, rb2D.linearVelocity.y);
+        
+        if(selectDirection != 0) stareDirection = selectDirection;
+        enemyDetect.DetectOfPlayer(stareDirection);
+        enemyDetect.DetectBackOfPlayer(stareDirection);
     }
 
     public bool CanUseSkill() {
@@ -45,9 +53,9 @@ public class EnemyWander : MonoBehaviour, EnemySkill_Interface {
     }
 
     public void detectWall() {
-        hit = Physics2D.Raycast(new Vector2(this.transform.position.x + 0.55f * selectDirection, this.transform.position.y), Vector2.down, 0.55f);
-        if (hit.collider != null) {
-            if((Layer.wallLayer & (1 << hit.collider.gameObject.layer)) != 0) {
+        obstacleHit = Physics2D.Raycast(new Vector2(this.transform.position.x + 0.55f * selectDirection, this.transform.position.y), Vector2.down, 0.55f);
+        if (obstacleHit.collider != null) {
+            if((Layer.wallLayer & (1 << obstacleHit.collider.gameObject.layer)) != 0) {
                 selectDirection *= -1;
                 return;
             }
@@ -62,7 +70,7 @@ public class EnemyWander : MonoBehaviour, EnemySkill_Interface {
     }
 
     IEnumerator changeDirection() {
-        selectDirection = direction[Random.Range(0, direction.Length)];
+        selectDirection = directToPlayer[Random.Range(0, directToPlayer.Length)];
 
         randTime = Random.Range(4f, 7f);
 

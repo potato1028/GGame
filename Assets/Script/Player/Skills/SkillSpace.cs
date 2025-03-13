@@ -53,7 +53,7 @@ public class SkillSpace : MonoBehaviour {
         playerState.blinkLock = Physics2D.Raycast(this.transform.position, 
                     (targetObject.transform.position - this.transform.position).normalized, 
                     Vector2.Distance(this.transform.position, 
-                    targetObject.transform.position), Layer.groundLayer);
+                    targetObject.transform.position), Layer.terrainLayer);
     }
 
     public static void skillSpaceOnOff(string state) {
@@ -73,13 +73,13 @@ public class SkillSpace : MonoBehaviour {
     }
 
     void OnTriggerStay2D(Collider2D collision2D) {
-        if(collision2D.gameObject.layer == (int)LayerNum.Ground) {
+        if(((1 << collision2D.gameObject.layer) & Layer.terrainLayer) != 0) {
             playerState.blinkLock = true;
         }
     }
 
     void OnTriggerExit2D(Collider2D collision2D) {
-        if(collision2D.gameObject.layer == (int)LayerNum.Ground) {
+        if(((1 << collision2D.gameObject.layer) & Layer.terrainLayer) != 0) {
             playerState.blinkLock = false;
         }
     }

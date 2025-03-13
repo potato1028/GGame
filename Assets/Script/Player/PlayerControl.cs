@@ -44,28 +44,28 @@ public class PlayerControl : MonoBehaviour {
     }
 
     void playerDetectWall() {
-        bool[] isLeftWalls = new bool[5];
-        bool[] isRightWalls = new bool[5];
+        Vector2 wallRayVec = new Vector2(transform.position.x, transform.position.y + 1.0f);
 
-        Vector2 wallRayVec = new Vector2(transform.position.x, transform.position.y + 0.9f);
 
-        for (int i = 0; i < 5; i++) {
-            isLeftWalls[i] = Physics2D.Raycast(wallRayVec, Vector2.left, 0.51f, Layer.groundLayer);
-            isRightWalls[i] = Physics2D.Raycast(wallRayVec, Vector2.right, 0.51f, Layer.groundLayer);
+        for (int i = 0; i < 9; i++) {
+            if (Physics2D.Raycast(wallRayVec, Vector2.left, 0.51f, Layer.terrainLayer)) {
+                isAttachedLeftWall = true;
+                break;
+            }
+
+            if (Physics2D.Raycast(wallRayVec, Vector2.right, 0.51f, Layer.terrainLayer)) {
+                isAttachedRightWall = true;
+                break;
+            }
 
             #if UNITY_EDITOR
             Debug.DrawRay(wallRayVec, Vector2.left * 0.51f, Color.green);
             Debug.DrawRay(wallRayVec, Vector2.right * 0.51f, Color.green);
             #endif
 
-            isAttachedLeftWall = isLeftWalls[i];
-            isAttachedRightWall = isRightWalls[i];
-
-            if (isAttachedLeftWall || isAttachedRightWall) {
-                break;
-            }
-
-            wallRayVec.y -= 0.45f;
+            isAttachedLeftWall = false;
+            isAttachedRightWall = false;
+            wallRayVec.y -= 0.25f;
         }
     }
 
@@ -75,7 +75,7 @@ public class PlayerControl : MonoBehaviour {
         Vector2 groundRayVec = new Vector2(transform.position.x - 0.4f, transform.position.y);
 
         for (int i = 0; i < 9; i++) {
-            isDownGround[i] = Physics2D.Raycast(groundRayVec, Vector2.down, 1.1f, Layer.groundLayer);
+            isDownGround[i] = Physics2D.Raycast(groundRayVec, Vector2.down, 1.1f, Layer.terrainLayer);
 
             #if UNITY_EDITOR
             Debug.DrawRay(groundRayVec, Vector2.down * 1.1f, Color.green);
