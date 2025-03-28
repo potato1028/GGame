@@ -22,11 +22,11 @@ public class EnemyDetect : MonoBehaviour{
     public void DetectOfPlayer(int enemyForward) {
         OnDraw(new Vector2(enemyForward, 0));
 
-        if(enemyState.playerCap2D == null) return;
+        if(enemyState.playerBox2D == null) return;
 
-        detectionPoints[0] = (Vector2)enemyState.playerCap2D.bounds.center;
-        detectionPoints[1] = detectionPoints[0] - new Vector2(0, enemyState.playerCap2D.bounds.extents.y);
-        detectionPoints[2] = detectionPoints[0] + new Vector2(0, enemyState.playerCap2D.bounds.extents.y);
+        detectionPoints[0] = (Vector2)enemyState.playerBox2D.bounds.center;
+        detectionPoints[1] = detectionPoints[0] - new Vector2(0, enemyState.playerBox2D.bounds.extents.y);
+        detectionPoints[2] = detectionPoints[0] + new Vector2(0, enemyState.playerBox2D.bounds.extents.y);
         
         foreach(Vector2 target in detectionPoints) {
             Vector2 direction = target - (Vector2)this.transform.position;

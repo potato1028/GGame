@@ -18,9 +18,8 @@ public class JumpSkill : MonoBehaviour, PlayerSkill_Interface{
     }
 
     public void UseSkill() {
-        if (playerState.isGround && !playerState.jumpLock) {
-            PerformJump();
-        } else if (!playerState.isGround && !jumpBufferActive) {
+        if (playerState.isGround && !playerState.jumpLock) PerformJump();
+        else if (!playerState.isGround && !jumpBufferActive) {
             jumpBufferActive = true;
             Invoke(nameof(BufferedJump), playerState.jumpBufferTime);
         }
@@ -33,9 +32,8 @@ public class JumpSkill : MonoBehaviour, PlayerSkill_Interface{
     }
 
     private void BufferedJump() {
-        if (playerState.isGround) {
-            PerformJump();
-        }
+        if (playerState.isGround) PerformJump();
+
         jumpBufferActive = false;
     }
 
@@ -48,8 +46,6 @@ public class JumpSkill : MonoBehaviour, PlayerSkill_Interface{
     }
 
     public void OnUpdate() {
-        if (Input.GetKeyDown(KeyCode.Space)) {
-            UseSkill();
-        }
+        if (Input.GetKeyDown(KeyCode.Space)) UseSkill();
     }
 }

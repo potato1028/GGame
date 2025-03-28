@@ -4,7 +4,7 @@ using System.Collections;
 public class EnemyState : MonoBehaviour {
     [Header("Object")]
     public GameObject player;
-    public CapsuleCollider2D playerCap2D;
+    public BoxCollider2D playerBox2D;
 
     [Header("Parameter")]
     public Vector2 direction;
@@ -60,8 +60,8 @@ public class EnemyState : MonoBehaviour {
             return;
         }
 
-        playerCap2D = detectedObject.GetComponent<CapsuleCollider2D>();
-        player = playerCap2D.gameObject;
+        playerBox2D = detectedObject.GetComponent<BoxCollider2D>();
+        player = playerBox2D.gameObject;
 
         direction = (Vector2)player.transform.position - (Vector2)this.transform.position;
         this.distance = direction.magnitude;
@@ -106,7 +106,7 @@ public class EnemyState : MonoBehaviour {
     }
 
     private void nonePlayer() {
-        playerCap2D = null;
+        playerBox2D = null;
         player = null;
         currentState = State.Wandering;
         isPlayerDetected = false;
