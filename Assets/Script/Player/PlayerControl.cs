@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class PlayerControl : MonoBehaviour {
     public PlayerStateData playerState;
@@ -20,16 +21,13 @@ public class PlayerControl : MonoBehaviour {
         playerState.moveSpeed = 5f;
     }
 
-    void Update() {
-        playerMove();
-    }
-
     void FixedUpdate() {
-        playerDetectWall();
-        playerDetectGround();
+        PlayerDetectWall();
+        PlayerDetectGround();
+        PlayerMove();
     }
 
-    void playerMove() {
+    void PlayerMove() {
         if (!playerState.moveLock) {
             float horizontalInput = Input.GetAxis("Horizontal");
 
@@ -43,7 +41,7 @@ public class PlayerControl : MonoBehaviour {
         }
     }
 
-    void playerDetectWall() {
+    void PlayerDetectWall() {
         Vector2 wallRayVec = new Vector2(transform.position.x, transform.position.y + 1.0f);
 
 
@@ -69,7 +67,7 @@ public class PlayerControl : MonoBehaviour {
         }
     }
 
-    void playerDetectGround() {
+    void PlayerDetectGround() {
         bool[] isDownGround = new bool[9];
 
         Vector2 groundRayVec = new Vector2(transform.position.x - 0.4f, transform.position.y);
@@ -82,18 +80,14 @@ public class PlayerControl : MonoBehaviour {
             #endif
 
             if (isDownGround[i]) {
-                CancelInvoke("endCoyote");
                 playerState.isGround = true;
+                playerState.lastOnGroundTime = playerState.coyoteTime;
                 break;
             }
 
             groundRayVec.x += 0.1f;
+            playerState.isGround = false;
+            playerState.lastOnGroundTime -= Time.deltaTime;
         }
-
-        Invoke("endCoyote", playerState.coyoteTime);
-    }
-
-    void endCoyote() {
-        playerState.isGround = false;
     }
 }

@@ -47,7 +47,7 @@ public class BlinkSkill : MonoBehaviour, PlayerSkill_Interface {
 
             yield return new WaitForSeconds(0.2f);
 
-            PlayerControl.playerRb.gravityScale = 2f;
+            playerRb.gravityScale = playerState.defaultGravity;
             playerState.moveLock = false;
 
             StartCoroutine(BlinkCoolDown());

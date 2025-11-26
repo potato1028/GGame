@@ -14,10 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerName: 
   moveSpeed: 5
-  jumpForce: 10
-  isGround: 1
+  jumpForce: 14
+  lastOnGroundTime: -5.600094
+  isGround: 0
   jumpLock: 0
   moveLock: 0
   blinkLock: 0
-  jumpBufferTime: 0.05
-  coyoteTime: 0.1
+  jumpBufferTime: 0.1
+  coyoteTime: 0.25
+  defaultGravity: 2
+  fallingGravity: 3
