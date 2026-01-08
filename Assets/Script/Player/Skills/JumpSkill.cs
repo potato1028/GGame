@@ -32,7 +32,7 @@ public class JumpSkill : MonoBehaviour, PlayerSkill_Interface{
     IEnumerator JumpCoolDown() {
         playerState.jumpLock = true;
 
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(playerState.jumpCoolDownTime);
 
         playerState.jumpLock = false;
     }

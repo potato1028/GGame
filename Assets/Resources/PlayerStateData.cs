@@ -16,6 +16,7 @@ public class PlayerStateData : ScriptableObject {
     public bool blinkLock = false;
 
     [Header("Player System Stage")]
+    public float jumpCoolDownTime = 0.25f;
     public float jumpBufferTime = 0.05f;
     public float coyoteTime = 0.25f;
     public float apexTime = 0.1f;

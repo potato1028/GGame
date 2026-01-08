@@ -2,16 +2,20 @@ using UnityEngine;
 using System.Collections;
 
 public class BlinkSkill : MonoBehaviour, PlayerSkill_Interface {
+    [Header("Player Component")]
     public PlayerStateData playerState;
-    public GameObject skillSpaceCircle;
-
     private Rigidbody2D playerRb;
+
+    [Header("Others")]
+    public GameObject skillSpaceCircle;
     private bool isRightMousePressed;
 
     void Start() {
         if(playerState == null) playerState = Resources.Load<PlayerStateData>("State");
         
         playerRb = PlayerControl.playerRb;
+
+        skillSpaceCircle = GameObject.FindWithTag(Tag.SkillSpace);
     }
 
     public string GetName() {
