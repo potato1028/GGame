@@ -1,126 +1,113 @@
 using UnityEngine;
 using System.Collections;
 
-[RequireComponent (typeof (BoxCollider2D))]
-
-public class PlayerControl : MonoBehaviour {
-    public PlayerStateData playerState;
+public class PlayerControl : RaycastController {
+    // public PlayerStateData playerState;
 
     [Header("Player Component")]
     public static Rigidbody2D playerRb;
 
-    [Header("Player States")]
-    public float moveSpeed;
-    public bool isAttachedLeftWall;
-    public bool isAttachedRightWall;
+    // [Header("Player States")]
+    // public float moveSpeed;
+    // public bool isAttachedLeftWall;
+    // public bool isAttachedRightWall;
 
-    void Awake() {
-        if(playerState == null) playerState = Resources.Load<PlayerStateData>("State");
+    // void Awake() {
+    //     if(playerState == null) playerState = Resources.Load<PlayerStateData>("State");
 
-        playerRb = this.gameObject.GetComponent<Rigidbody2D>();
-    }
+    //     playerRb = this.gameObject.GetComponent<Rigidbody2D>();
+    // }
 
-    void Start() {
-        moveSpeed = playerState.moveSpeed;
+    // void Start() {
+    //     moveSpeed = playerState.moveSpeed;
 
-        //////////////
-        /////////////
-        boxCollider = GetComponent<BoxCollider2D>();
-        CalculateRaySpacing();
-    }
+    //     //////////////
+    //     /////////////
+    // }
 
-    //void FixedUpdate() {
-    //    PlayerDetectWall();
-    //    PlayerDetectGround();
-    //    PlayerMove();
-    //}
+    // //void FixedUpdate() {
+    // //    PlayerDetectWall();
+    // //    PlayerDetectGround();
+    // //    PlayerMove();
+    // //}
 
-    void PlayerMove() {
-        if (!playerState.moveLock) {
-            float horizontalInput = Input.GetAxis("Horizontal");
+    // void PlayerMove() {
+    //     if (!playerState.moveLock) {
+    //         float horizontalInput = Input.GetAxis("Horizontal");
 
-            if (!isAttachedLeftWall && horizontalInput < 0) {
-                playerRb.linearVelocity = new Vector2(horizontalInput * moveSpeed, playerRb.linearVelocity.y);
-            }
+    //         if (!isAttachedLeftWall && horizontalInput < 0) {
+    //             playerRb.linearVelocity = new Vector2(horizontalInput * moveSpeed, playerRb.linearVelocity.y);
+    //         }
 
-            if (!isAttachedRightWall && horizontalInput > 0) {
-                playerRb.linearVelocity = new Vector2(horizontalInput * moveSpeed, playerRb.linearVelocity.y);
-            }
-        }
-    }
+    //         if (!isAttachedRightWall && horizontalInput > 0) {
+    //             playerRb.linearVelocity = new Vector2(horizontalInput * moveSpeed, playerRb.linearVelocity.y);
+    //         }
+    //     }
+    // }
 
-    void PlayerDetectWall() {
-        Vector2 wallRayVec = new Vector2(transform.position.x, transform.position.y + 1.0f);
+    // void PlayerDetectWall() {
+    //     Vector2 wallRayVec = new Vector2(transform.position.x, transform.position.y + 1.0f);
 
 
-        for (int i = 0; i < 9; i++) {
-            if (Physics2D.Raycast(wallRayVec, Vector2.left, 0.51f, Layer.terrainLayer)) {
-                isAttachedLeftWall = true;
-                break;
-            }
+    //     for (int i = 0; i < 9; i++) {
+    //         if (Physics2D.Raycast(wallRayVec, Vector2.left, 0.51f, Layer.terrainLayer)) {
+    //             isAttachedLeftWall = true;
+    //             break;
+    //         }
 
-            if (Physics2D.Raycast(wallRayVec, Vector2.right, 0.51f, Layer.terrainLayer)) {
-                isAttachedRightWall = true;
-                break;
-            }
+    //         if (Physics2D.Raycast(wallRayVec, Vector2.right, 0.51f, Layer.terrainLayer)) {
+    //             isAttachedRightWall = true;
+    //             break;
+    //         }
 
-            #if UNITY_EDITOR
-            Debug.DrawRay(wallRayVec, Vector2.left * 0.51f, Color.green);
-            Debug.DrawRay(wallRayVec, Vector2.right * 0.51f, Color.green);
-            #endif
+    //         #if UNITY_EDITOR
+    //         Debug.DrawRay(wallRayVec, Vector2.left * 0.51f, Color.green);
+    //         Debug.DrawRay(wallRayVec, Vector2.right * 0.51f, Color.green);
+    //         #endif
 
-            isAttachedLeftWall = false;
-            isAttachedRightWall = false;
-            wallRayVec.y -= 0.25f;
-        }
-    }
+    //         isAttachedLeftWall = false;
+    //         isAttachedRightWall = false;
+    //         wallRayVec.y -= 0.25f;
+    //     }
+    // }
 
-    void PlayerDetectGround() {
-        bool[] isDownGround = new bool[9];
+    // void PlayerDetectGround() {
+    //     bool[] isDownGround = new bool[9];
 
-        Vector2 groundRayVec = new Vector2(transform.position.x - 0.4f, transform.position.y);
+    //     Vector2 groundRayVec = new Vector2(transform.position.x - 0.4f, transform.position.y);
 
-        for (int i = 0; i < 9; i++) {
-            isDownGround[i] = Physics2D.Raycast(groundRayVec, Vector2.down, 1.1f, Layer.terrainLayer);
+    //     for (int i = 0; i < 9; i++) {
+    //         isDownGround[i] = Physics2D.Raycast(groundRayVec, Vector2.down, 1.1f, Layer.terrainLayer);
 
-            #if UNITY_EDITOR
-            Debug.DrawRay(groundRayVec, Vector2.down * 1.1f, Color.green);
-            #endif
+    //         #if UNITY_EDITOR
+    //         Debug.DrawRay(groundRayVec, Vector2.down * 1.1f, Color.green);
+    //         #endif
 
-            if (isDownGround[i]) {
-                playerState.isGround = true;
-                playerState.lastOnGroundTime = playerState.coyoteTime;
-                break;
-            }
+    //         if (isDownGround[i]) {
+    //             playerState.isGround = true;
+    //             playerState.lastOnGroundTime = playerState.coyoteTime;
+    //             break;
+    //         }
 
-            groundRayVec.x += 0.1f;
-            playerState.isGround = false;
-            playerState.lastOnGroundTime -= Time.deltaTime;
-        }
+    //         groundRayVec.x += 0.1f;
+    //         playerState.isGround = false;
+    //         playerState.lastOnGroundTime -= Time.deltaTime;
+    //     }
 
-        moveSpeed = playerState.isGround ? playerState.moveSpeed : (playerState.moveSpeed * 0.8f);
-    }
-
-
+    //     moveSpeed = playerState.isGround ? playerState.moveSpeed : (playerState.moveSpeed * 0.8f);
+    // }
 
     #region 강의 부분
 
-    [Header("RayCast ReNew")]
-    const float skinWidth = .015f;
-
-    public int horizontalRayCount = 4;
-    public int verticalRayCount = 4;
-
+    [Header("Collision Data")]
     float maxClimbAngle = 80f;
     float maxDescendAngle = 75f;
-
-    float horizontalRaySpacing;
-    float verticalRaySpacing;
     
-    BoxCollider2D boxCollider;
-    RaycastOrigins raycastOrigins;
     public CollisionInfo collisions;
 
+    public override void Start() {
+        base.Start();
+    }
 
     public void Move(Vector3 velocity) {
         UpdateRaycastOrigins();
@@ -258,32 +245,6 @@ public class PlayerControl : MonoBehaviour {
                 }
             }
         }
-    }
-
-    void UpdateRaycastOrigins() {
-        Bounds bounds = boxCollider.bounds; 
-        bounds.Expand(skinWidth * -2); //여백만큼 BoxCollider2D의 범위를 줄이는 행위
-
-        raycastOrigins.bottomLeft = new Vector2(bounds.min.x, bounds.min.y);
-        raycastOrigins.bottomRight = new Vector2(bounds.max.x, bounds.min.y);
-        raycastOrigins.topLeft = new Vector2(bounds.min.x, bounds.max.y);
-        raycastOrigins.topRight = new Vector2(bounds.max.x, bounds.max.y);
-    }
-
-    void CalculateRaySpacing() {
-        Bounds bounds = boxCollider.bounds; 
-        bounds.Expand(skinWidth * -2);
-
-        horizontalRayCount = Mathf.Clamp(horizontalRayCount, 2, int.MaxValue);
-        verticalRayCount = Mathf.Clamp(verticalRayCount, 2, int.MaxValue);
-
-        horizontalRaySpacing = bounds.size.y / (horizontalRayCount - 1);
-        verticalRaySpacing = bounds.size.x / (verticalRayCount - 1);
-    }
-     
-    struct RaycastOrigins {
-        public Vector2 topLeft, topRight;
-        public Vector2 bottomLeft, bottomRight;
     }
 
     public struct CollisionInfo {

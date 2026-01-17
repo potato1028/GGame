@@ -18,4 +18,5 @@ public static class Layer {
     public static LayerMask playerLayer = 1 << (int)LayerNum.Player;
 
     public static LayerMask terrainLayer =  (1 << (int)LayerNum.Wall) | (1 << (int)LayerNum.Ground);
+    public static LayerMask passengerLayer = (1 << (int)LayerNum.Player) | (1 << (int)LayerNum.Enemy);
 }
